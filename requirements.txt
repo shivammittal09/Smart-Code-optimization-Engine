@@ -1,0 +1,4 @@
+Flask==2.3.3
+httpx==0.24.1
+gunicorn==21.2.0  # Optional: For production deployment
+guesslang==1.2.1  # If using language detection (optional)

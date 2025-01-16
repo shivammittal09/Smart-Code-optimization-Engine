@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Search Assistant</title>
+    <!-- Correct link to static CSS file -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="chat-container">
+        <div class="chat-header">
+          <div class="header-content">
+            <div class="logo">
+              <i class="fas fa-robot"></i>
+            </div>
+            <div class="header-text">
+              <h1>AI Search Assistant</h1>
+              <p class="status" id="aiStatus">Online</p>
+            </div>
+          </div>
+          <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle">
+              <i class="fas fa-moon"></i>
+            </button>
+            <button class="clear-chat" id="clearChat">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+          <div class="message system">
+            <div class="message-content">
+              <div class="message-avatar">
+                <i class="fas fa-robot"></i>
+              </div>
+              <div class="message-bubble">
+                <div class="message-info">
+                  <span class="message-sender">AI Assistant</span>
+                  <span class="message-time">Just now</span>
+                </div>
+                <div class="message-text">
+                  Hello! I'm your AI search assistant. How can I help you find
+                  information today?
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-input">
+          <form id="searchForm">
+            <div class="input-wrapper">
+              <input
+                type="text"
+                id="userInput"
+                placeholder="Enter your code snippet..."
+                autocomplete="off"
+              />
+              <div class="input-actions">
+                <button type="submit" class="send-message">
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Correct link to static JS file -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+      // Switch between light and dark themes
+      const themeToggle = document.getElementById("themeToggle");
+      const body = document.body;
+      const aiStatus = document.getElementById("aiStatus");
+
+      themeToggle.addEventListener("click", () => {
+        if (body.getAttribute("data-theme") === "dark") {
+          body.removeAttribute("data-theme");
+        } else {
+          body.setAttribute("data-theme", "dark");
+        }
+      });
+
+      // Clear chat history
+      const clearChat = document.getElementById("clearChat");
+      clearChat.addEventListener("click", () => {
+        const chatMessages = document.getElementById("chatMessages");
+        chatMessages.innerHTML = ""; // Clear all messages
+      });
+
+      // Function to simulate AI being offline (can be tied to server status)
+      function updateAIStatus(isOnline) {
+        if (isOnline) {
+          aiStatus.textContent = "Online";
+          aiStatus.style.color = "#10b981"; // Green
+        } else {
+          aiStatus.textContent = "Offline";
+          aiStatus.style.color = "#ef4444"; // Red
+        }
+      }
+
+      // Update AI status to offline for testing
+      updateAIStatus(false); // Set AI to offline (you can change this based on server status)
+
+      // Handle form submission and clear input field
+      const searchForm = document.getElementById("searchForm");
+      const userInput = document.getElementById("userInput");
+      searchForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const query = userInput.value;
+        if (query.trim()) {
+          appendMessage("user", query);
+          userInput.value = ""; // Clear input after submission
+        }
+      });
+
+      // Append message with clickable links
+      function appendMessage(sender, message) {
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("message", sender);
+
+        // Check if the message includes URLs
+        const content = `
+                <div class="message-content">
+                    <div class="message-bubble">
+                        <div class="message-text">
+                            ${message.replace(
+                              /(https?:\/\/[^\s]+)/g,
+                              '<a href="$1" target="_blank">$1</a>'
+                            )}
+                        </div>
+                    </div>
+                </div>`;
+        messageDiv.innerHTML = content;
+
+        const chatMessages = document.getElementById("chatMessages");
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to bottom
+      }
+    </script>
+  </body>
+</html>
