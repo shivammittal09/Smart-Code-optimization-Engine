@@ -39,6 +39,3 @@ The Smart Code Optimization Engine is designed to refine, enhance, and optimize 
 2. **Processing**: The system uses **Groq API** for code refinement and **SERP API** for related insights. 🤖
 3. **Output**: Optimized code is returned with a detailed explanation of changes and resource grading. 🏆
 
-## Contributions 🤝
-
-We welcome contributions! Submit issues, feature requests, or pull requests to help improve this project.
